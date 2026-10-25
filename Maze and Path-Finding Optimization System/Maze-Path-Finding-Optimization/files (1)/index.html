@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maze and Path-Finding Optimization System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Maze and Path-Finding Optimization System</h1>
+  <p>Generate or draw a maze, then watch BFS, DFS, Dijkstra and A* search from the green start to the red end. Compare them on path length, path cost, nodes explored and execution time.</p>
+</header>
+
+<main>
+  <section class="card">
+    <canvas id="maze" width="620" height="620"></canvas>
+    <div class="legend">
+      <span><i style="background:#14213d"></i>Wall</span>
+      <span><i style="background:#f4f1e6;border:1px solid #c9d2de"></i>Open</span>
+      <span><i style="background:rgba(11,114,144,.5)"></i>Explored</span>
+      <span><i style="background:#f76707"></i>Path</span>
+      <span><i style="background:#2f9e44"></i>Start</span>
+      <span><i style="background:#e03131"></i>End</span>
+    </div>
+    <p class="hint">Click or drag on the grid to add or remove walls.</p>
+  </section>
+
+  <section class="side">
+    <div class="card">
+      <h2>Maze</h2>
+      <div class="row">
+        <label>Size
+          <select id="size">
+            <option value="15">15 x 15</option>
+            <option value="25" selected>25 x 25</option>
+            <option value="41">41 x 41</option>
+            <option value="61">61 x 61</option>
+          </select>
+        </label>
+        <label>Extra openings <output id="loopsOut">10</output>%
+          <input type="range" id="loops" min="0" max="40" value="10">
+        </label>
+      </div>
+      <label class="check"><input type="checkbox" id="weighted"> Weighted terrain (darker cells cost more to enter)</label>
+      <button id="btnNew">Generate new maze</button>
+      <details class="io">
+        <summary>Import / export maze (text)</summary>
+        <textarea id="mazeText" rows="8" spellcheck="false" placeholder="# wall   . open   2-9 costly cell   S start   E end"></textarea>
+        <div class="row">
+          <button id="btnExport" class="ghost">Show current maze as text</button>
+          <button id="btnLoad" class="ghost">Load maze from text</button>
+        </div>
+        <label>Or open a .txt file <input type="file" id="mazeFile" accept=".txt,text/plain"></label>
+        <div id="ioMsg" class="hint"></div>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>Solve</h2>
+      <div class="row">
+        <label>Algorithm
+          <select id="algo">
+            <option value="BFS">BFS</option>
+            <option value="DFS">DFS</option>
+            <option value="Dijkstra">Dijkstra</option>
+            <option value="A*">A*</option>
+          </select>
+        </label>
+        <label>Speed
+          <input type="range" id="speed" min="1" max="60" value="8">
+        </label>
+      </div>
+      <div class="row">
+        <button id="btnRun">Run (animated)</button>
+        <button id="btnAll" class="alt">Run all and compare</button>
+      </div>
+      <button id="btnClear" class="ghost">Clear path</button>
+      <div id="single" class="single"></div>
+    </div>
+  </section>
+</main>
+
+<section class="wide card">
+  <h2>Live race simulation</h2>
+  <p class="hint">All four algorithms search the same maze at the same time. Each one takes the same number of steps per tick, so the one that explores fewer cells finishes first.</p>
+  <div class="row" style="margin-top:12px">
+    <button id="raceStart">Start race</button>
+    <button id="racePause" class="alt">Pause</button>
+    <button id="raceStep" class="ghost">Step once</button>
+    <button id="raceReset" class="ghost">Reset</button>
+    <label>Speed<input type="range" id="rspeed" min="1" max="12" value="2"></label>
+  </div>
+  <div id="raceMsg" class="racemsg"></div>
+  <div id="raceGrid" class="racegrid"></div>
+</section>
+
+<section class="wide card">
+  <h2>Performance comparison</h2>
+  <p class="hint">Click a row to show that algorithm’s search on the grid. Time is the average of 30 runs.</p>
+  <div class="scroll">
+    <table id="cmp">
+      <thead><tr><th>Algorithm</th><th>Found</th><th>Path length (steps)</th><th>Path cost</th><th>Nodes explored</th><th>Time (ms)</th><th>Result</th></tr></thead>
+      <tbody><tr><td colspan="7" class="empty">Press “Run all and compare”.</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="wide card">
+  <h2>Theory: time and space complexity</h2>
+  <p class="hint">V = number of open cells, E = number of connections (about 4V on a grid).</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Algorithm</th><th>Technique</th><th>Time</th><th>Space</th><th>Shortest path?</th></tr></thead>
+      <tbody>
+        <tr><td>BFS</td><td>Queue, level by level</td><td>O(V + E)</td><td>O(V)</td><td>Fewest steps. Not cheapest on weighted maps.</td></tr>
+        <tr><td>DFS</td><td>Stack, go deep first</td><td>O(V + E)</td><td>O(V)</td><td>No. Finds a path, usually a long one.</td></tr>
+        <tr><td>Dijkstra</td><td>Min-heap on distance g(n)</td><td>O((V + E) log V)</td><td>O(V)</td><td>Yes, lowest cost (non-negative weights).</td></tr>
+        <tr><td>A*</td><td>Min-heap on g(n) + h(n), Manhattan h</td><td>O((V + E) log V) worst case</td><td>O(V)</td><td>Yes, since h never overestimates. Usually explores far fewer nodes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>Maze and Path-Finding Optimization System | DAA Mini Project</footer>
+<script src="script.js"></script>
+</body>
+</html>
