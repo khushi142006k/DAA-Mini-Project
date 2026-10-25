@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MazeLab | Path-Finding Optimization</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><div class="brand"><div class="brand-icon">⌘</div><div><strong>MazeLab</strong><small>DAA MINI PROJECT</small></div></div><div class="top-meta"><span class="live-dot"></span> Interactive algorithm visualizer <span class="pill">BFS · DFS · Dijkstra · A*</span></div></header>
+<main class="shell">
+  <section class="intro"><div><p class="eyebrow">DESIGN & ANALYSIS OF ALGORITHMS</p><h1>Maze & Path-Finding <span>Optimization System</span></h1><p class="subhead">Build a maze, run four search strategies, and compare their path quality, execution time, and explored nodes.</p></div><div class="hero-stat"><span>4</span><small>ALGORITHMS<br>TO COMPARE</small></div></section>
+  <section class="workspace">
+    <aside class="panel controls">
+      <div class="section-head"><div><p class="eyebrow">CONTROL PANEL</p><h2>Configure search</h2></div><span class="number">01</span></div>
+      <label for="algorithm">Algorithm</label><select id="algorithm"><option value="bfs">Breadth-First Search (BFS)</option><option value="dfs">Depth-First Search (DFS)</option><option value="dijkstra">Dijkstra's Algorithm</option><option value="astar">A* Search</option></select>
+      <div class="button-row"><button id="runBtn" class="primary">▶ Run algorithm</button><button id="compareBtn" class="secondary">Compare all</button></div>
+      <div class="divider"></div><p class="label">Maze tools</p><div class="tool-grid"><button class="tool active" data-tool="wall">▦ Draw walls</button><button class="tool" data-tool="erase">⌫ Erase</button><button class="tool" data-tool="start">S Move start</button><button class="tool" data-tool="end">E Move target</button></div>
+      <div class="button-row spaced"><button id="randomBtn" class="secondary">⤨ Random maze</button><button id="clearBtn" class="secondary">Clear walls</button></div>
+      <div class="divider"></div><div class="legend"><p class="label">Cell legend</p><div><i class="swatch start"></i> Start <i class="swatch end"></i> Target</div><div><i class="swatch wall"></i> Wall <i class="swatch visited"></i> Explored</div><div><i class="swatch path"></i> Final path</div></div>
+      <p class="hint">Tip: Select “Draw walls” and click or drag across the grid. Start and target can be moved using their tools.</p>
+    </aside>
+    <section class="panel maze-panel"><div class="section-head"><div><p class="eyebrow">LIVE CANVAS</p><h2>Maze workspace</h2></div><div class="maze-actions"><span id="status" class="status">Ready to explore</span><button id="resetBtn" class="icon-btn" title="Reset visualization">↻</button></div></div>
+      <div class="maze-wrap"><div id="maze" role="grid" aria-label="Interactive maze grid"></div></div>
+      <div class="maze-footer"><span><b id="dimensions">25 × 17</b> grid cells</span><span>Move: <kbd>click / drag</kbd></span><span>Default movement: <b>4-directional</b></span></div>
+    </section>
+  </section>
+  <section class="results"><div class="section-head"><div><p class="eyebrow">PERFORMANCE ANALYSIS</p><h2>Algorithm results</h2></div><span class="result-note">Results update after each run</span></div>
+    <div class="metric-grid"><article class="metric"><span class="metric-icon">↗</span><small>SELECTED ALGORITHM</small><strong id="metricAlgo">—</strong><p id="metricAlgoNote">Run a search to begin</p></article><article class="metric"><span class="metric-icon">⌁</span><small>PATH LENGTH</small><strong id="metricPath">—</strong><p>Number of steps from start to target</p></article><article class="metric"><span class="metric-icon">◉</span><small>NODES EXPLORED</small><strong id="metricNodes">—</strong><p>Cells visited during the search</p></article><article class="metric"><span class="metric-icon">◷</span><small>EXECUTION TIME</small><strong id="metricTime">—</strong><p>Measured in this browser session</p></article></div>
+    <div class="panel comparison"><div class="section-head"><div><p class="eyebrow">SIDE-BY-SIDE</p><h2>Comparison table</h2></div><span class="pill subtle">Empirical results</span></div><div class="table-scroll"><table><thead><tr><th>Algorithm</th><th>Path found</th><th>Path length</th><th>Nodes explored</th><th>Execution time</th><th>Guarantee / strategy</th></tr></thead><tbody id="comparisonBody"><tr><td colspan="6" class="empty">Run “Compare all” to populate the comparison.</td></tr></tbody></table></div><p class="footnote">Execution times depend on your device and current maze. Tiny mazes may complete faster than the timer's reliable precision.</p></div>
+  </section>
+  <section class="notes-grid"><article class="panel note-card"><p class="eyebrow">COMPLEXITY NOTES</p><h3>How to interpret the results</h3><ul><li><b>BFS:</b> explores level by level; finds a shortest path when every move has equal cost.</li><li><b>DFS:</b> explores deeply before backtracking; does not guarantee a shortest path.</li><li><b>Dijkstra:</b> expands the lowest known path cost; optimal for non-negative edge costs.</li><li><b>A*:</b> uses path cost + Manhattan-distance heuristic; optimal here with unit-cost 4-way movement.</li></ul></article><article class="panel note-card"><p class="eyebrow">THEORY</p><h3>Time & space complexity</h3><p>For a graph with <b>V</b> cells and <b>E</b> valid neighbor links:</p><div class="complexity"><span>BFS / DFS</span><code>O(V + E)</code></div><div class="complexity"><span>Dijkstra</span><code>O((V + E) log V)</code></div><div class="complexity"><span>A*</span><code>O((V + E) log V)</code>*</div><small>*Typical priority-queue implementation; A* worst-case behavior can still be exponential with some heuristic/search formulations.</small></article></section>
+  <footer>MazeLab · DAA Mini Project · HTML, CSS, JavaScript & C++</footer>
+</main><script src="app.js"></script></body></html>
